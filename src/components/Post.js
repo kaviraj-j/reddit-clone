@@ -47,6 +47,10 @@ function Post() {
     }
   };
 
+  const handleCommentButtonClick = async () => {
+    alert("Oops! Haven't implemented comment functionality yet");
+  }
+
   return (
     <div className="post">
       {post && user && (
@@ -57,6 +61,10 @@ function Post() {
         </div>
       )}
       <h3>Comments</h3>
+      <div className='comment-input-box'>
+      <input type="text" id="comment-input" placeholder='Add a comment'></input>
+      <button onClick={() => handleCommentButtonClick()}>Comment</button>
+      </div>
       <ul>
         {comments.map(comment => (
           <li key={comment.id} className='comments'>

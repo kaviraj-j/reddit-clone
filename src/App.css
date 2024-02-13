@@ -73,3 +73,16 @@ body {
   background-color: rgba(240, 228, 223, 0.553);
   border-radius: 10px;
 }
+
+.comment-input-box input{
+  padding: 10px;
+  background-color: rgb(223, 207, 191);
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.comment-input-box button {
+  padding: 10px;
+  background-color: rgb(20, 131, 205);
+  border-radius: 5px;
+}
