@@ -2,6 +2,17 @@
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
+.logo img {
+  width: 50px;
+  display: inline;
+}
+
+.logo h1 {
+  display: inline;
+  color: rgb(212, 90, 46);
+  padding: 10px;
+}
+
 .container {
   max-width: 800px;
   margin: 20px auto;

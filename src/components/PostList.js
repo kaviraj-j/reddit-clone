@@ -22,12 +22,7 @@ function PostList() {
 
   return (
     <div>
-      <div className="logo">
-        <h1>Reddit Clone</h1>
-      </div>
-      <div className="logo">
-        <h5>(trust me this is a reddit clone)</h5>
-      </div>
+      
       <div className="post-list">
         {posts.map((post) => (
           <Link key={post.id} to={`/post/${post.id}`}>
