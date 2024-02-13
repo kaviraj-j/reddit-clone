@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter, Link } from 'react-router-dom';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import PostList from './components/PostList';
 import Post from './components/Post';
 import User from './components/User';
@@ -9,7 +9,7 @@ function App() {
   return (
     <div className='app'>
       <div className="logo">
-        <a href={'/'}><img src={"https://seeklogo.com/images/R/reddit-logo-23F13F6A6A-seeklogo.com.png"}></img><h1>Reddit Clone</h1></a>
+        <a href={'/'}><img src={"https://seeklogo.com/images/R/reddit-logo-23F13F6A6A-seeklogo.com.png"} alt='reddit-logo'></img><h1>Reddit Clone</h1></a>
         
       </div>
       <div className="logo">
