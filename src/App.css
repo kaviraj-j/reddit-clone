@@ -1,5 +1,9 @@
 * {
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: rgba(233, 75, 8, 0.553);
 }
 
 .logo img {
@@ -25,15 +29,20 @@
   border: 2px solid #120202;
   border-radius: 5px;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: rgba(187, 58, 7, 0.858);
+}
+
+.post-list {
+  align-items: center;
 }
 
 .post-box {
   margin: 5px;
-  border: 2px solid black;
   border-radius: 5px;
-  padding: 5px;
-
+  padding: 10px;
+  background-color: rgba(187, 58, 7, 0.858);
+  width: 500px;
+  
 }
 
 .user {
@@ -41,13 +50,26 @@
   border-radius: 5px;
   padding: 20px;
   margin-bottom: 20px;
-  background-color: #f9f9f9;
+  background-color: rgba(187, 58, 7, 0.858);
 }
 
 .post-list a {
-  color: black; 
+  color: black;
 }
 
 .post ul {
   list-style: none;
+}
+
+.post-list {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.comment-box {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: rgba(240, 228, 223, 0.553);
+  border-radius: 10px;
 }

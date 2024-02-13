@@ -59,9 +59,11 @@ function Post() {
       <h3>Comments</h3>
       <ul>
         {comments.map(comment => (
-          <li key={comment.id}>
-            <p>{comment.body}</p>
+          <li key={comment.id} className='comments'>
+            <div className='comment-box'>
+            <p >{comment.body}</p>
             <button onClick={() => handleUserButtonClick(comment.email)}>Commented by: {comment.email}</button>
+            </div>            
           </li>
         ))}
       </ul>
