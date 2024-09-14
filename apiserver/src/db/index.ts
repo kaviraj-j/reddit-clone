@@ -13,3 +13,11 @@ export async function createNewUser(user: Prisma.UserCreateInput) {
     return createdUser;
 }
 
+export async function findUserWithEmail(email: string) {
+    const user = await prisma.user.findFirst({
+        where: {
+            email: email,
+        },
+    });
+    return user;
+}
