@@ -1,19 +1,10 @@
 import { Router, Request, Response } from "express";
+import { signUpController } from "../controllers/user";
 
 const authRouter: Router = Router();
 
-// Signup route
-authRouter.get("/signup", (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    return res
-      .status(400)
-      .json({ message: "Username and password are required" });
-  }
-  res.status(201).json({ message: "User signed up successfully!" });
-});
+authRouter.post("/signup", signUpController);
 
-// Login route
 authRouter.get("/login", (req: Request, res: Response) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -30,7 +21,6 @@ authRouter.get("/login", (req: Request, res: Response) => {
   }
 });
 
-// Email check route
 authRouter.get("/emailcheck/:email", (req: Request, res: Response) => {
   const email: string = req.params.email || "";
 
