@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { NewUser } from "../db/data-types";
 import { createNewUser, findUserWithEmail } from "../db";
 import { Prisma, User } from "@prisma/client";
+import jwt from "jsonwebtoken";
+
+
 
 export const signUpController = async (req: Request, res: Response) => {
   const user: NewUser = req.body;
@@ -46,5 +49,15 @@ export const loginController = async  (req: Request, res: Response) => {
     if(!user || !isPasswordMatch) {
         return res.status(401).json({ message: "Invalid username or password" });
     }
-    return res.status(200).json({ message: "Login successful!" });
-  } 
+    const jwtSecretKey: string = process.env.JWT_SECRET_KEY ?? "";
+
+    const data = {
+        time: Date(),
+        userId: user.id,
+        username: user.username
+    };
+
+    const token = jwt.sign(data, jwtSecretKey, { expiresIn: '1h' });
+
+    return res.status(200).json({ message: "Login successful!", token });
+  }
