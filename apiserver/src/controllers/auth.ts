@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { NewUser } from "../db/data-types";
-import { createNewUser, findUserWithEmail } from "../db";
+import * as db from "../db";
 import { Prisma, User } from "@prisma/client";
 import jwt from "jsonwebtoken";
-
+import { genSaltSync, hashSync, hash, compare } from "bcrypt";
 
 
 export const signUpController = async (req: Request, res: Response) => {
@@ -20,7 +20,8 @@ export const signUpController = async (req: Request, res: Response) => {
     return res.status(400).send({ msg: "Data is missing" });
   }
   try {
-    const newUser = await createNewUser(user);
+    const hashedPassword = await hash(user.password, 10);
+    const newUser = await db.createNewUser({...user, password: hashedPassword});
     if (!newUser) {
       throw new Error("User creation failed");
     }
@@ -39,13 +40,13 @@ export const loginController = async  (req: Request, res: Response) => {
         .json({ message: "Username and password are required" });
     }
     
-    const user: User | null = await findUserWithEmail(email);
-    console.log({user})
+    const user: User | null = await db.findUserWithEmail(email);
+    
     let isPasswordMatch
     if(user) {
-        isPasswordMatch = user?.password === password
+      isPasswordMatch = await compare(password, user.password)
     }
-
+    
     if(!user || !isPasswordMatch) {
         return res.status(401).json({ message: "Invalid username or password" });
     }
