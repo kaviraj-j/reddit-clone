@@ -7,8 +7,8 @@ import { getUserFromToken } from "../utils/auth";
 import {z} from "zod";
 
 const userSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
+  firstName: z.string().min(1, "First name is required").optional(),
+  lastName: z.string().min(1, "Last name is required").optional(),
   username: z.string().min(1, "Username is required"),
   password: z.string().min(8, "Password must be at least 8 characters long"),
   email: z.string().email("Invalid email format"),
@@ -68,7 +68,7 @@ export const loginController = async (req: Request, res: Response) => {
 
   const data = {
     time: Date(),
-    userId: user.id,
+    id: user.id,
     username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
