@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { genSaltSync, hashSync, hash, compare } from "bcrypt";
 import { getUserFromToken } from "../utils/auth";
 import {z} from "zod";
+import { AuthErrors } from "../lib/error-types/auth";
 
 const userSchema = z.object({
   firstName: z.string().min(1, "First name is required").optional(),
@@ -15,7 +16,6 @@ const userSchema = z.object({
 });
 
 export const signUpController = async (req: Request, res: Response) => {
-  console.log({body: req.body})
   const validation = userSchema.safeParse(req.body);
 
   if (!validation.success) {
@@ -26,6 +26,15 @@ export const signUpController = async (req: Request, res: Response) => {
         message: err.message,
       })),
     });
+  }
+
+  const userExists: User | null = await db.findUserWithEmail(req.body.email);
+
+  if(userExists) {
+    return res.status(AuthErrors.EMAIL_EXISTS.statusCode).json({
+      message: AuthErrors.EMAIL_EXISTS.message,
+      type: AuthErrors.EMAIL_EXISTS.type
+    })
   }
 
   const user = validation.data;

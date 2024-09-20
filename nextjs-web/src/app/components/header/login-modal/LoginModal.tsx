@@ -40,13 +40,25 @@ const LoginModal = ({ showLoginModal, setShowLoginModal }: Props) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let response;
-    if (authType === AuthType.SignIn) {
-      response = signIn(formData);
-    } else {
-      response = signUp(formData);
+    console.log("===== Before =======");
+  
+    try {
+      if (authType === AuthType.SignIn) {
+        response = await signIn(formData);
+      } else {
+        response = await signUp(formData);
+      }
+  
+      console.log({ a: response });
+    } catch (err: any) {
+      if (err.response && err.response.status === 400) {
+        console.log("Validation Error or Email already exists", err.response.data);
+      } else {
+        console.log("Other Error", err);
+      }
     }
-    console.log(response)
   };
+  
 
   if (!showLoginModal) return null;
 
