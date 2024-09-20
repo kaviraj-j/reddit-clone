@@ -1,4 +1,5 @@
 "use client";
+import { signIn, signUp } from "@/lib/auth";
 import React, { useState } from "react";
 
 type Props = {
@@ -17,10 +18,34 @@ const LoginModal = ({ showLoginModal, setShowLoginModal }: Props) => {
     setShowLoginModal(false);
   };
 
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
   const toggleAuthType = () => {
     setAuthType(
       authType === AuthType.SignIn ? AuthType.SignUp : AuthType.SignIn
     );
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    let response;
+    if (authType === AuthType.SignIn) {
+      response = signIn(formData);
+    } else {
+      response = signUp(formData);
+    }
+    console.log(response)
   };
 
   if (!showLoginModal) return null;
@@ -39,7 +64,7 @@ const LoginModal = ({ showLoginModal, setShowLoginModal }: Props) => {
           {authType === AuthType.SignIn ? "Sign In" : "Sign Up"}
         </h2>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           {authType === AuthType.SignUp && (
             <div className="mb-4">
               <label htmlFor="username" className="block mb-2">
@@ -51,6 +76,8 @@ const LoginModal = ({ showLoginModal, setShowLoginModal }: Props) => {
                 name="username"
                 className="w-full p-2 border border-gray-300 rounded-lg text-black"
                 required
+                onChange={handleInputChange}
+                value={formData.username}
               />
             </div>
           )}
@@ -65,6 +92,8 @@ const LoginModal = ({ showLoginModal, setShowLoginModal }: Props) => {
               name="email"
               className="w-full p-2 border border-gray-300 rounded-lg text-black"
               required
+              onChange={handleInputChange}
+              value={formData.email}
             />
           </div>
 
@@ -78,6 +107,8 @@ const LoginModal = ({ showLoginModal, setShowLoginModal }: Props) => {
               name="password"
               className="w-full p-2 border border-gray-300 rounded-lg text-black"
               required
+              onChange={handleInputChange}
+              value={formData.password}
             />
           </div>
 
