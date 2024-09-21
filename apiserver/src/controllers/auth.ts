@@ -7,6 +7,8 @@ import { getUserFromToken } from "../utils/auth";
 import { z } from "zod";
 import { AuthErrors } from "../lib/error-types/auth";
 
+const jwtSecretKey: string = process.env.JWT_SECRET_KEY ?? "";
+
 const userSchema = z.object({
   firstName: z.string().min(1, "First name is required").optional(),
   lastName: z.string().min(1, "Last name is required").optional(),
@@ -48,7 +50,19 @@ export const signUpController = async (req: Request, res: Response) => {
     if (!newUser) {
       throw new Error("User creation failed");
     }
-    res.status(201).json({ newUser });
+    const userResponse = {
+      id: newUser.id,
+      username: newUser.username,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+    };
+    const data = {
+      time: Date(),
+      ...userResponse,
+    };
+  
+    const token = jwt.sign(data, jwtSecretKey, { expiresIn: "1h" });
+    res.status(201).json({ token, user: userResponse, message: "New User Created" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -73,7 +87,6 @@ export const loginController = async (req: Request, res: Response) => {
   if (!user || !isPasswordMatch) {
     return res.status(401).json({ message: "Invalid username or password" });
   }
-  const jwtSecretKey: string = process.env.JWT_SECRET_KEY ?? "";
   const userResponse = {
     id: user.id,
     username: user.username,
