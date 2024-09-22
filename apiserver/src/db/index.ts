@@ -21,3 +21,12 @@ export async function findUserWithEmail(email: string) {
     });
     return user;
 }
+
+export async function findUserWithUsername(username: string) {
+    const user = await prisma.user.findFirst({
+        where: {
+            username,
+        },
+    });
+    return user;
+}

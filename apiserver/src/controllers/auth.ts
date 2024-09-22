@@ -4,7 +4,7 @@ import { Prisma, User } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { genSaltSync, hashSync, hash, compare } from "bcrypt";
 import { getUserFromToken } from "../utils/auth";
-import { z } from "zod";
+import { promise, z } from "zod";
 import { AuthErrors } from "../lib/error-types/auth";
 
 const jwtSecretKey: string = process.env.JWT_SECRET_KEY ?? "";
@@ -30,12 +30,22 @@ export const signUp = async (req: Request, res: Response) => {
     });
   }
 
-  const userExists: User | null = await db.findUserWithEmail(req.body.email);
+  const [userWithEmailExists, userWithUsernameExists] = await Promise.all([
+    db.findUserWithEmail(req.body.email),
+    db.findUserWithUsername(req.body.username),
+  ]);
 
-  if (userExists) {
+  if (userWithEmailExists) {
     return res.status(AuthErrors.EMAIL_EXISTS.statusCode).json({
       message: AuthErrors.EMAIL_EXISTS.message,
       type: AuthErrors.EMAIL_EXISTS.type,
+    });
+  }
+
+  if (userWithUsernameExists) {
+    return res.status(AuthErrors.USERNAME_NOT_AVAILABLE.statusCode).json({
+      message: AuthErrors.USERNAME_NOT_AVAILABLE.message,
+      type: AuthErrors.USERNAME_NOT_AVAILABLE.type,
     });
   }
 
@@ -60,9 +70,11 @@ export const signUp = async (req: Request, res: Response) => {
       time: Date(),
       ...userResponse,
     };
-  
+
     const token = jwt.sign(data, jwtSecretKey, { expiresIn: "1h" });
-    res.status(201).json({ token, user: userResponse, message: "New User Created" });
+    res
+      .status(201)
+      .json({ token, user: userResponse, message: "New User Created" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
