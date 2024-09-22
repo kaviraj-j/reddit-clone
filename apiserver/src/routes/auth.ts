@@ -1,11 +1,11 @@
 import { Router, Request, Response } from "express";
-import { loginController, signUpController } from "../controllers/auth";
+import * as AuthController from "../controllers/auth";
 
 const authRouter: Router = Router();
 
-authRouter.post("/signup", signUpController);
+authRouter.post("/signup", AuthController.signUp);
 
-authRouter.post("/login", loginController);
+authRouter.post("/login", AuthController.login);
 
 authRouter.get("/emailcheck/:email", (req: Request, res: Response) => {
   const email: string = req.params.email || "";
@@ -21,7 +21,6 @@ authRouter.get("/emailcheck/:email", (req: Request, res: Response) => {
   } else {
     res.redirect("/signup");
   }
-  
 });
 
 export default authRouter;

@@ -17,7 +17,7 @@ const userSchema = z.object({
   email: z.string().email("Invalid email format"),
 });
 
-export const signUpController = async (req: Request, res: Response) => {
+export const signUp = async (req: Request, res: Response) => {
   const validation = userSchema.safeParse(req.body);
 
   if (!validation.success) {
@@ -69,7 +69,7 @@ export const signUpController = async (req: Request, res: Response) => {
   }
 };
 
-export const loginController = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res
