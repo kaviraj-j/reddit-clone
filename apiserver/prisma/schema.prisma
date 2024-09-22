@@ -14,12 +14,41 @@ datasource db {
 }
 
 model User {
-    id             String        @id @default(uuid())
-    firstName      String?
-    lastName       String?
-    username       String        @unique
-    password       String
-    email          String        @unique
-    createdAt      DateTime      @default(now())
-    updatedAt      DateTime      @default(now())
+  id                 String      @id @default(uuid())
+  firstName          String?
+  lastName           String?
+  username           String      @unique
+  password           String
+  email              String      @unique
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @default(now()) @updatedAt
+  SubRedditsCreated  SubReddit[] @relation("CreatedBySubreddits")
+  SubRedditsFollowed SubReddit[]
+  Post               Post[]
+}
+
+model SubReddit {
+  id             String   @id @default(uuid())
+  name           String   @unique
+  description    String
+  bannerImageUrl String?
+  iconImageUrl   String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  createdBy      User     @relation("CreatedBySubreddits", fields: [createdById], references: [id])
+  createdById    String
+  followedBy     User[]
+  Post           Post[]
+}
+
+model Post {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  imagesUrl   String[]
+  videosUrl   String[]
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
+  subreddit   SubReddit @relation(fields: [subredditId], references: [id])
+  subredditId String
 }
