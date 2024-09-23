@@ -2,8 +2,8 @@ import express, {Application, Request, Response} from "express";
 import { SERVER_PORT } from "./configs/configs";
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
-import cors from "cors";
 import subredditRouter from "./routes/subreddit";
+import cors from "cors";
 
 const app: Application = express();
 

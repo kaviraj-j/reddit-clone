@@ -3,7 +3,6 @@ import { useAuth } from "@/app/context/authContext";
 import { signIn, signUp } from "@/lib/auth";
 import React, { useState } from "react";
 
-
 type Props = {
   showLoginModal: boolean;
   setShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +15,7 @@ enum AuthType {
 
 const LoginModal = ({ showLoginModal, setShowLoginModal }: Props) => {
   const [authType, setAuthType] = useState<AuthType>(AuthType.SignIn);
-  const {login} = useAuth();
+  const { login } = useAuth();
   const handleClose = () => {
     setShowLoginModal(false);
   };
@@ -43,27 +42,22 @@ const LoginModal = ({ showLoginModal, setShowLoginModal }: Props) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let response;
-  
+
     try {
       if (authType === AuthType.SignIn) {
         response = await signIn(formData);
       } else {
         response = await signUp(formData);
       }
-  
     } catch (err: any) {
-      if (err.response && err.response.status === 400) {
-        console.log("Validation Error or Email already exists", err.response.data);
-      } else {
-        console.log("Other Error", err);
-      }
+      alert(err.response.data.message);
     }
-    if(response) {
+    console.log({ response });
+    if (response) {
       login(response.user, response.token);
       setShowLoginModal(false);
     }
   };
-  
 
   if (!showLoginModal) return null;
 

@@ -4,8 +4,10 @@ import { Prisma, User } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { genSaltSync, hashSync, hash, compare } from "bcrypt";
 import { getUserFromToken } from "../utils/auth";
-import { promise, z } from "zod";
+import { z } from "zod";
 import { AuthErrors } from "../lib/error-types/auth";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 const jwtSecretKey: string = process.env.JWT_SECRET_KEY ?? "";
 
@@ -30,23 +32,26 @@ export const signUp = async (req: Request, res: Response) => {
     });
   }
 
-  const [userWithEmailExists, userWithUsernameExists] = await Promise.all([
-    db.findUserWithEmail(req.body.email),
-    db.findUserWithUsername(req.body.username),
-  ]);
+  const userExists = await prisma.user.findFirst({
+    where: {
+      OR: [{ email: req.body.email }, { username: req.body.username }],
+    },
+  });
 
-  if (userWithEmailExists) {
-    return res.status(AuthErrors.EMAIL_EXISTS.statusCode).json({
-      message: AuthErrors.EMAIL_EXISTS.message,
-      type: AuthErrors.EMAIL_EXISTS.type,
-    });
-  }
+  if (userExists) {
+    if (userExists.email === req.body.email) {
+      return res.status(AuthErrors.EMAIL_EXISTS.statusCode).json({
+        message: AuthErrors.EMAIL_EXISTS.message,
+        type: AuthErrors.EMAIL_EXISTS.type,
+      });
+    }
 
-  if (userWithUsernameExists) {
-    return res.status(AuthErrors.USERNAME_NOT_AVAILABLE.statusCode).json({
-      message: AuthErrors.USERNAME_NOT_AVAILABLE.message,
-      type: AuthErrors.USERNAME_NOT_AVAILABLE.type,
-    });
+    if (userExists.username === req.body.username) {
+      return res.status(AuthErrors.USERNAME_NOT_AVAILABLE.statusCode).json({
+        message: AuthErrors.USERNAME_NOT_AVAILABLE.message,
+        type: AuthErrors.USERNAME_NOT_AVAILABLE.type,
+      });
+    }
   }
 
   const user = validation.data;
