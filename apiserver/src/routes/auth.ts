@@ -1,11 +1,14 @@
 import { Router, Request, Response } from "express";
 import * as AuthController from "../controllers/auth";
+import { isLoggedIn } from "../middleware";
 
 const authRouter: Router = Router();
 
 authRouter.post("/signup", AuthController.signUp);
 
 authRouter.post("/login", AuthController.login);
+
+authRouter.post("/validate", isLoggedIn, AuthController.validate);
 
 authRouter.get("/emailcheck/:email", (req: Request, res: Response) => {
   const email: string = req.params.email || "";

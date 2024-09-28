@@ -24,6 +24,6 @@ export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
     req.user = userDetails;
     next();
   } catch (err) {
-    return res.status(403).json({ message: "Invalid token" });
+    return res.status(403).json({ message: "Invalid token", type: "INVALID_TOKEN" });
   }
 };
