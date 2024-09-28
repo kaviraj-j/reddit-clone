@@ -79,7 +79,6 @@ export const signUp = async (req: Request, res: Response) => {
     const token = jwt.sign(data, jwtSecretKey, { expiresIn: "1h" });
     res
       .status(201)
-      .header({ Authorization: `Bearer ${token}` })
       .json({ token, user: userResponse, message: "New User Created" });
   } catch (error) {
     console.error(error);
@@ -120,8 +119,7 @@ export const login = async (req: Request, res: Response) => {
 
   return res
     .status(200)
-    .header({ Authorization: `Bearer ${token}` })
-    .json({ message: "Login successful!", user: userResponse });
+    .json({ message: "Login successful!", user: userResponse, token });
 };
 
 export const validate = async (req: Request, res: Response) => {
