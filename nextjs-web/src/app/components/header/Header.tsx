@@ -5,10 +5,9 @@ import SidePanel from "../side-panel/SidePanel"
 type Props = {};
 
 const Header = (props: Props) => {
-  const user = false;
 
   return (
-    <header className="flex items-center justify-between bg-black py-4 px-6 shadow-md">
+    <header className="flex items-start bg-black py-4 px-6 shadow-md">
       <SidePanel />
       <SearchBar />
       <div className="ml-auto">

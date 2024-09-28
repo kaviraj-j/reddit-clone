@@ -17,12 +17,10 @@ export const createNewSubReddit = async (req: Request, res: Response) => {
     if (!newSubReddit) {
       throw new Error("Error creating subreddit");
     }
-    res
-      .status(201)
-      .json({
-        message: "Subreddit created successfully",
-        subredditId: newSubReddit.id,
-      });
+    res.status(201).json({
+      message: "Subreddit created successfully",
+      subredditId: newSubReddit.id,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error creating subreddit" });

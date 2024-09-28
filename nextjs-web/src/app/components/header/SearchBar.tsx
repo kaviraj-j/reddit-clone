@@ -16,7 +16,7 @@ const SearchBar = (props: Props) => {
         <input
           type="text"
           placeholder="Search Reddit"
-          className="bg-transparent focus:outline-none px-3 py-2 rounded-l-md w-full text-gray-700"
+          className="bg-transparent focus:outline-none px-3 py-2 rounded-l-md w-full text-gray-200"
         />
         
       </form>

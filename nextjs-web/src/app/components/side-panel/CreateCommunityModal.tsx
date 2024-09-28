@@ -23,7 +23,7 @@ export function CreateCommunity() {
   );
   const descriptionRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(true); // Controls dialog visibility
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const trimmedName = e.target.value.replace(/\s/g, "");

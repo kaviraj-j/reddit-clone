@@ -17,10 +17,10 @@ export default function ResponsiveSidebar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const Sidebar = () => (
-    <div className="flex h-screen w-64 flex-col overflow-y-auto border-r px-4 py-8 text-white bg-black">
-      <CreateCommunity />
+    <div className="flex h-screen w-64 flex-col overflow-y-auto border-r px-4 py-8 text-white bg-black mr-2">
       <ScrollArea className="flex-grow">
-        <nav className="flex flex-col space-y-1">
+        <nav className="flex flex-col space-y-1 mb-1">
+          <CreateCommunity />
           {followedSubreddits.map((item) => (
             <a
               key={item.name}
@@ -40,7 +40,6 @@ export default function ResponsiveSidebar() {
       <aside className="hidden lg:block">
         <Sidebar />
       </aside>
-      
 
       <div className="lg:hidden">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
