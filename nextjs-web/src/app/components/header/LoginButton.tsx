@@ -3,9 +3,10 @@
 import { useRef, useState, useEffect } from "react";
 import LoginModal from "./LoginModal";
 import { useAuth } from "@/app/context/authContext";
+import { validateToken } from "@/lib/auth";
 
 const LoginButton = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, token } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [showLogoutButton, setShowLogoutButton] = useState<boolean>(false);
   const logoutButtonRef = useRef<HTMLDivElement | null>(null);
@@ -17,6 +18,22 @@ const LoginButton = () => {
       setShowLogoutButton(true);
     }
   };
+
+  useEffect(() => {
+    console.log("Inside validate tkn use effect")
+    async function validate() {
+      if (token) {
+        console.log("Indie IF")
+        const isValidToken = await validateToken(token);
+        console.log({isValidToken})
+        if(!isValidToken) {
+          logout()
+        }
+      }
+      
+    }
+    validate()
+  }, [token]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

@@ -1,3 +1,7 @@
+"use client";
+
+import { validateToken } from "@/lib/auth";
+
 export default function Home() {
   return (
     <>

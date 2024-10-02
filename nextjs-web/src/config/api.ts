@@ -2,7 +2,8 @@ export const apiBaseUrl: string = process.env.SERVER_BASE_URL ?? "http://localho
 
 export const authUrl = {
   signUp: `${apiBaseUrl}/auth/signup`,
-  signIn: `${apiBaseUrl}/auth/login`
+  signIn: `${apiBaseUrl}/auth/login`,
+  validateToken: `${apiBaseUrl}/auth/validate`
 }
 
 export const subredditUrl = {

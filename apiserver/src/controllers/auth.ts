@@ -123,5 +123,5 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const validate = async (req: Request, res: Response) => {
-  res.status(200).json({message: "Valid Token"});
+  res.status(200).json({ message: "Valid Token" });
 };

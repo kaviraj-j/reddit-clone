@@ -8,7 +8,7 @@ authRouter.post("/signup", AuthController.signUp);
 
 authRouter.post("/login", AuthController.login);
 
-authRouter.post("/validate", isLoggedIn, AuthController.validate);
+authRouter.get("/validate", isLoggedIn, AuthController.validate);
 
 authRouter.get("/emailcheck/:email", (req: Request, res: Response) => {
   const email: string = req.params.email || "";
