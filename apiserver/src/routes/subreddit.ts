@@ -10,4 +10,10 @@ subredditRouter.post(
   SubRedditController.createNewSubReddit
 );
 
+subredditRouter.get(
+  "/follwed",
+  isLoggedIn,
+  SubRedditController.getUserFollwedSubReddits
+)
+
 export default subredditRouter;

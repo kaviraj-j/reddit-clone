@@ -23,7 +23,7 @@ model User {
   createdAt          DateTime    @default(now())
   updatedAt          DateTime    @default(now()) @updatedAt
   SubRedditsCreated  SubReddit[] @relation("CreatedBySubreddits")
-  SubRedditsFollowed SubReddit[]
+  SubRedditsFollowed SubReddit[] @relation("FollwedBySubreddits")
   Post               Post[]
 }
 
@@ -37,7 +37,7 @@ model SubReddit {
   updatedAt      DateTime @default(now()) @updatedAt
   createdBy      User     @relation("CreatedBySubreddits", fields: [createdById], references: [id])
   createdById    String
-  followedBy     User[]
+  followedBy     User[]   @relation("FollwedBySubreddits")
   Post           Post[]
 }
 
