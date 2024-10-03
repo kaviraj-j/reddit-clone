@@ -20,12 +20,9 @@ const LoginButton = () => {
   };
 
   useEffect(() => {
-    console.log("Inside validate tkn use effect")
     async function validate() {
       if (token) {
-        console.log("Indie IF")
         const isValidToken = await validateToken(token);
-        console.log({isValidToken})
         if(!isValidToken) {
           logout()
         }

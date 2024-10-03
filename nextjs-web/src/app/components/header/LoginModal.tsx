@@ -52,7 +52,6 @@ const LoginModal = ({ showLoginModal, setShowLoginModal }: Props) => {
     } catch (err: any) {
       alert(err.response.data.message);
     }
-    console.log({ response });
     if (response) {
       login(response.user, response.token);
       setShowLoginModal(false);

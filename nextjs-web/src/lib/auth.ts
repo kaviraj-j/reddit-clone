@@ -21,23 +21,28 @@ export const signIn = async (userDetails: SignInUserPayload) => {
 };
 
 export const validateToken = async (token: string): Promise<boolean> => {
-  console.log("Inside validate token func");
-  
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
   try {
     const response = await axios.get(authUrl.validateToken, { headers });
-    
+
     console.log("Token is valid");
     return true;
   } catch (error: any) {
-    if (error.response && error.response.data && error.response.data.type === "INVALID TOKEN") {
+    if (
+      error.response &&
+      error.response.data &&
+      error.response.data.type === "INVALID TOKEN"
+    ) {
       console.log("Token is invalid");
       return false;
     }
-    console.error("An error occurred while validating the token:", error.message || error);
-    return false
+    console.error(
+      "An error occurred while validating the token:",
+      error.message || error
+    );
+    return false;
   }
 };

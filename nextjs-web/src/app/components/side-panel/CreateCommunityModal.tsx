@@ -55,6 +55,8 @@ export function CreateCommunity() {
     e.preventDefault();
     const formErrors = validateForm();
     setErrors(formErrors);
+    console.log("inside create community")
+    console.log({createCommtoken: token})
 
     if (Object.keys(formErrors).length === 0) {
       if (!token) {

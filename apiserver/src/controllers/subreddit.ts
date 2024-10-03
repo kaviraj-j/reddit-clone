@@ -48,7 +48,6 @@ export const getUserFollwedSubReddits = async (req: Request, res: Response) => {
         },
       },
     });
-    console.log({subReddits})
     return res.status(200).json({data: subReddits, message: "Subreddits found"})
   }
   return res.status(401).json("User not found")
