@@ -16,4 +16,9 @@ subredditRouter.get(
   SubRedditController.getUserFollwedSubReddits
 )
 
+subredditRouter.get(
+  "/:subredditName",
+  SubRedditController.getSubRedditDetails
+)
+
 export default subredditRouter;

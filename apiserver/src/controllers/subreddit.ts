@@ -10,8 +10,8 @@ export const createNewSubReddit = async (req: Request, res: Response) => {
     createdById: req.user.id,
     followedBy: {
       connect: {
-        id: req.user.id
-      }
+        id: req.user.id,
+      },
     },
   };
 
@@ -37,7 +37,7 @@ export const getUserFollwedSubReddits = async (req: Request, res: Response) => {
     return res.status(401).json("Invalid request");
   }
   const user = await prisma.user.findFirst({ where: { id: req.user.id } });
-  
+
   if (user) {
     const subReddits = await prisma.subReddit.findMany({
       where: {
@@ -48,7 +48,25 @@ export const getUserFollwedSubReddits = async (req: Request, res: Response) => {
         },
       },
     });
-    return res.status(200).json({data: subReddits, message: "Subreddits found"})
+    return res
+      .status(200)
+      .json({ data: subReddits, message: "Subreddits found" });
   }
-  return res.status(401).json("User not found")
+  return res.status(401).json("User not found");
+};
+
+export const getSubRedditDetails = async (req: Request, res: Response) => {
+  const { subredditName } = req.params;
+  try {
+    const subReddit = await prisma.subReddit.findFirst({
+      where: {
+        name: {
+          equals: subredditName,
+        },
+      },
+    });
+    return res.status(200).json({ data: subReddit });
+  } catch (err) {
+    console.log(err);
+  }
 };
