@@ -14,7 +14,7 @@ import { useAuth } from "@/app/context/authContext";
 export default function ResponsiveSidebar() {
   const [followedSubreddits, setFollowedSubReddits] = useState<SubReddit[]>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { token } = useAuth();
+  const { token, user } = useAuth();
 
   useEffect(() => {
     const fetchFollwedSubreddits = async () => {
@@ -35,7 +35,7 @@ export default function ResponsiveSidebar() {
     <div className="flex h-screen w-64 flex-col overflow-y-auto border-r px-4 py-8 text-white bg-black mr-2">
       <ScrollArea className="flex-grow">
         <nav className="flex flex-col space-y-1 mb-1">
-          <CreateCommunity />
+          {user && <CreateCommunity />}
           {followedSubreddits &&
             followedSubreddits.map((subReddit) => (
               <Link
