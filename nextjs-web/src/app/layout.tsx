@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "./components/header/Header";
 import { AuthProvider } from "./context/authContext";
+import SidePanel from "./components/side-panel/SidePanel";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,9 +32,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
       >
         <AuthProvider>
-          <Header />
+          <div className="flex min-h-screen">
+            <div className="lg:block lg:w-64">
+              <SidePanel />
+            </div>
+
+            <div className="flex-grow">
+              <Header />
+              <main>{children}</main>
+            </div>
+          </div>
         </AuthProvider>
-        {children}
       </body>
     </html>
   );

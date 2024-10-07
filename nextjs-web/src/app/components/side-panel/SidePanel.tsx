@@ -11,7 +11,7 @@ import Link from "next/link";
 import { getFollwedSubreddits } from "@/lib/subreddit";
 import { useAuth } from "@/app/context/authContext";
 
-export default function ResponsiveSidebar() {
+export default function SidePanel() {
   const [followedSubreddits, setFollowedSubReddits] = useState<SubReddit[]>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { token, user } = useAuth();
@@ -53,9 +53,9 @@ export default function ResponsiveSidebar() {
 
   return (
     <>
-      <aside className="hidden lg:block">
+      <div className="hidden lg:flex">
         <Sidebar />
-      </aside>
+      </div>
 
       <div className="lg:hidden">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -77,7 +77,6 @@ export default function ResponsiveSidebar() {
               onClick={() => setIsOpen(false)}
             >
               <X className="h-6 w-6" />
-              {/* <span className="sr-only">Close sidebar</span> */}
             </Button>
             <Sidebar />
           </SheetContent>

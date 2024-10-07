@@ -1,25 +1,27 @@
 import React from "react";
-import { Search } from 'lucide-react';
+import { Search } from "lucide-react";
 
 type Props = {};
 
 const SearchBar = (props: Props) => {
   return (
-    <div className="flex justify-center my-6">
-      <form action="" className="flex items-center bg-gray-800 rounded-lg px-2 py-1 shadow-sm">
-      <button
-          type="submit"
-          className="p-2 text-gray-500 hover:text-blue-500 focus:outline-none"
-        >
-          <Search className="w-5 h-5" />
-        </button>
-        <input
-          type="text"
-          placeholder="Search Reddit"
-          className="bg-transparent focus:outline-none px-3 py-2 rounded-l-md w-full text-gray-200"
-        />
-        
-      </form>
+    <div className="container mx-auto flex items-center justify-between">
+      <div className="flex items-center">
+        <h1 className="text-2xl font-bold text-orange-500">reddit</h1>
+      </div>
+      <div className="flex-grow mx-4">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search Reddit"
+            className="w-full bg-gray-800 rounded-full py-1 px-4 focus:outline-none focus:ring-1 focus:ring-orange-500"
+          />
+          <Search
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            size={20}
+          />
+        </div>
+      </div>
     </div>
   );
 };
