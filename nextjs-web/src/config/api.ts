@@ -9,5 +9,6 @@ export const authUrl = {
 
 export const subredditUrl = {
   new: `${apiBaseUrl}/subreddit/new`,
+  getDetails: `${apiBaseUrl}/subreddit`,
   follwedSubReddits: `${apiBaseUrl}/subreddit/follwed`,
 };

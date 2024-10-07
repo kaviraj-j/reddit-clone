@@ -23,10 +23,21 @@ export const createSubreddit = async (
     .then((res) => res.data);
 };
 
+export const getSubredditDetails = async (subredditName: string, token: string) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  return axios
+    .get(`${subredditUrl.getDetails}/${subredditName}`, { headers })
+    .then((res) => res.data);
+};
+
 export const getFollwedSubreddits = async (token: string) => {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
-  return axios.get(subredditUrl.follwedSubReddits, { headers }).then((res) => res.data);
+  return axios
+    .get(subredditUrl.follwedSubReddits, { headers })
+    .then((res) => res.data);
 };
