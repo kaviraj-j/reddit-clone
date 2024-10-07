@@ -1,12 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ArrowUp, ArrowDown, MessageSquare, Share2 } from "lucide-react";
 import {
-  ArrowUp,
-  ArrowDown,
-  MessageSquare,
-  Share2,
-  
-} from "lucide-react";
+  redirect,
+  RedirectType,
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
+import { useAuth } from "@/app/context/authContext";
+import { getSubredditDetails } from "@/lib/subreddit";
 
 interface Post {
   id: number;
@@ -17,7 +21,27 @@ interface Post {
   content: string;
 }
 
+interface SubReddit {
+  id: string;
+  name: string;
+  description: string;
+  bannerImageUrl: string | null;
+  iconImageUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  createdById: string;
+}
+
 const SubredditPage: React.FC = () => {
+  const params = useParams();
+  let subredditName: string;
+
+  if (Array.isArray(params.subredditName)) {
+    subredditName = params.subredditName[0];
+  } else {
+    subredditName = params.subredditName || "";
+  }
+  const { token } = useAuth();
   const [posts, setPosts] = useState<Post[]>([
     {
       id: 1,
@@ -44,12 +68,27 @@ const SubredditPage: React.FC = () => {
       content: "Check out these amazing new images of distant galaxies!",
     },
   ]);
+  const [subreddit, setSubreddit] = useState<SubReddit | null>(null);
+  console.log({ subredditName });
+  useEffect(() => {
+    if (!subredditName) {
+      redirect("/", RedirectType.replace);
+    }
+    const fetchSubredditDetails = async () => {
+      try {
+        const response = await getSubredditDetails(subredditName, token ?? "");
+        if (!response?.data) return;
+        setSubreddit(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchSubredditDetails();
+  }, []);
 
   return (
     <div className="bg-black text-gray-200 min-h-screen">
-      <header className="bg-gray-900 p-2">
-        
-      </header>
+      <header className="bg-gray-900 p-2"></header>
       <div className="container mx-auto mt-4 flex">
         <main className="w-2/3 pr-4">
           {posts.map((post) => (
@@ -93,28 +132,24 @@ const SubredditPage: React.FC = () => {
           ))}
         </main>
         <aside className="w-1/3">
-          <div className="bg-gray-900 rounded-lg shadow-md p-4">
+          {subreddit && <div className="bg-gray-900 rounded-lg shadow-md p-4">
             <h2 className="text-lg font-semibold mb-2 text-orange-500">
-              About r/SpaceTalk
+              About r/{subredditName}
             </h2>
             <p className="text-sm text-gray-300 mb-4">
-              A community for space enthusiasts to discuss astronomy, space
-              exploration, and all things cosmic!
+              {subreddit.description}
             </p>
             <div className="mb-4">
               <div className="flex justify-between text-sm mb-2">
                 <span>Members</span>
-                <span>42.0k</span>
+                <span>{}</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span>Online</span>
-                <span>1.2k</span>
-              </div>
+              
             </div>
             <button className="bg-orange-500 text-white rounded px-4 py-2 w-full hover:bg-orange-600">
               Create Post
             </button>
-          </div>
+          </div>}
         </aside>
       </div>
     </div>
