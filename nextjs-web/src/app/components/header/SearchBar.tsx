@@ -6,9 +6,8 @@ type Props = {};
 const SearchBar = (props: Props) => {
   return (
     <div className="container mx-auto flex items-center justify-between">
-      <div className="flex items-center">
-        <h1 className="text-2xl font-bold text-orange-500">reddit</h1>
-      </div>
+      <h1 className="text-2xl font-bold text-orange-500">reddit</h1>
+
       <div className="flex-grow mx-4">
         <div className="relative">
           <input
