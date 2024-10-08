@@ -25,6 +25,7 @@ model User {
   SubRedditsCreated  SubReddit[] @relation("CreatedBySubreddits")
   SubRedditsFollowed SubReddit[] @relation("FollwedBySubreddits")
   Post               Post[]
+  votes              Vote[]
 }
 
 model SubReddit {
@@ -39,16 +40,35 @@ model SubReddit {
   createdById    String
   followedBy     User[]   @relation("FollwedBySubreddits")
   Post           Post[]
+  membersCount   Int      @default(0)
 }
 
 model Post {
-  id          String    @id @default(uuid())
-  title       String
-  description String
-  imagesUrl   String[]
-  videosUrl   String[]
-  author      User      @relation(fields: [authorId], references: [id])
-  authorId    String
-  subreddit   SubReddit @relation(fields: [subredditId], references: [id])
-  subredditId String
+  id            String    @id @default(uuid())
+  title         String
+  description   String
+  imagesUrl     String[]
+  videosUrl     String[]
+  author        User      @relation(fields: [authorId], references: [id])
+  authorId      String
+  subreddit     SubReddit @relation(fields: [subredditId], references: [id])
+  subredditId   String
+  votes         Vote[]
+  upvoteCount   Int       @default(0)
+  downvoteCount Int       @default(0)
+}
+
+model Vote {
+  userId   String
+  postId   String
+  user     User     @relation(fields: [userId], references: [id])
+  post     Post     @relation(fields: [postId], references: [id])
+  voteType VoteType
+
+  @@id([userId, postId])
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
 }
