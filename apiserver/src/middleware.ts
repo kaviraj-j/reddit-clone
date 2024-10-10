@@ -14,6 +14,7 @@ interface JwtPayoad {
 
 export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header("Authorization")?.split(" ")[1];
+  console.log({ headers: req.header("Authorization") });
   if (!token) {
     return res
       .status(401)
@@ -24,6 +25,8 @@ export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
     req.user = userDetails;
     next();
   } catch (err) {
-    return res.status(403).json({ message: "Invalid token", type: "INVALID_TOKEN" });
+    return res
+      .status(403)
+      .json({ message: "Invalid token", type: "INVALID_TOKEN" });
   }
 };

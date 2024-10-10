@@ -24,7 +24,7 @@ model User {
   updatedAt          DateTime    @default(now()) @updatedAt
   SubRedditsCreated  SubReddit[] @relation("CreatedBySubreddits")
   SubRedditsFollowed SubReddit[] @relation("FollwedBySubreddits")
-  Post               Post[]
+  authoredPosts      Post[]      @relation("AuthoredPosts")
   votes              Vote[]
 }
 
@@ -49,7 +49,7 @@ model Post {
   description   String
   imagesUrl     String[]
   videosUrl     String[]
-  author        User      @relation(fields: [authorId], references: [id])
+  author        User      @relation("AuthoredPosts", fields: [authorId], references: [id])
   authorId      String
   subreddit     SubReddit @relation(fields: [subredditId], references: [id])
   subredditId   String
