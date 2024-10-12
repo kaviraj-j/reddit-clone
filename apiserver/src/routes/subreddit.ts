@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { isLoggedIn } from "../middleware";
+import { isCreatorOfSubreddit, isLoggedIn } from "../middleware";
 import * as SubRedditController from "../controllers/subreddit";
 
 const subredditRouter: Router = Router();
@@ -14,11 +14,13 @@ subredditRouter.get(
   "/follwed",
   isLoggedIn,
   SubRedditController.getUserFollwedSubReddits
-)
+);
 
-subredditRouter.get(
-  "/:subredditName",
-  SubRedditController.getSubRedditDetails
-)
+subredditRouter.get("/:subredditName", SubRedditController.getSubRedditDetails);
+
+subredditRouter
+  .route("/:subredditId")
+  // .put(isLoggedIn, isCreatorOfSubreddit, SubRedditController.editSubreddit())
+  // .delete(isLoggedIn, SubRedditController.deleteSubreddit());
 
 export default subredditRouter;
