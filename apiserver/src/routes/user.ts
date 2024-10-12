@@ -3,9 +3,9 @@ import { getUsers } from "../db";
 
 const userRouter: Router = Router();
 
-userRouter.get("/", (req: Request, res: Response) => {
-    const users = getUsers();
-    res.send({msg: users})
-})
+userRouter.get("/", async (req: Request, res: Response) => {
+  const users = await getUsers();
+  res.send({ msg: users });
+});
 
 export default userRouter;

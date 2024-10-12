@@ -5,5 +5,6 @@ import * as PostController from "../controllers/post";
 const postRouter: Router = Router();
 
 postRouter.post("/new", isLoggedIn, PostController.newPost);
+postRouter.get("/", PostController.getPosts);
 
 export default postRouter;

@@ -14,7 +14,6 @@ interface JwtPayoad {
 
 export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header("Authorization")?.split(" ")[1];
-  console.log({ headers: req.header("Authorization") });
   if (!token) {
     return res
       .status(401)
