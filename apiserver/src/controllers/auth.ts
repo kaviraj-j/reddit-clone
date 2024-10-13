@@ -115,7 +115,7 @@ export const login = async (req: Request, res: Response) => {
     ...userResponse,
   };
 
-  const token = jwt.sign(data, jwtSecretKey, { expiresIn: "1h" });
+  const token = jwt.sign(data, jwtSecretKey, { expiresIn: "1d" });
 
   return res
     .status(200)

@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
+import { Subreddit } from "../types";
 const prisma = new PrismaClient();
 export const createNewSubReddit = async (req: Request, res: Response) => {
   if (!req.user?.id) {
@@ -69,4 +70,32 @@ export const getSubRedditDetails = async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const editSubreddit = async (req: Request, res: Response) => {
+  try {
+    const subreddit: Subreddit = req.subreddit;
+    if (!subreddit) {
+      return;
+    }
+
+    const { bannerImageUrl, description, iconImageUrl } = req.body;
+    if (bannerImageUrl) {
+      subreddit.bannerImageUrl = bannerImageUrl;
+    }
+    if (description) {
+      subreddit.description = description;
+    }
+    if (iconImageUrl) {
+      subreddit.iconImageUrl = iconImageUrl;
+    }
+
+    await prisma.subReddit.update({
+      where: {
+        id: subreddit.id,
+      },
+      data: { ...subreddit },
+    });
+    return res.status(200).json({message: "Subreddit edited successfully"})
+  } catch (error) {}
 };
