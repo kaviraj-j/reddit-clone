@@ -42,21 +42,23 @@ export const isCreatorOfSubreddit = async (
       .status(403)
       .json({ message: "Invalid token", type: "INVALID_TOKEN" });
   }
-  const { subredditName } = req.params;
+  const { subredditId } = req.params;
   try {
+    console.log("Inside try block");
     const subreddit = await prisma.subReddit.findFirst({
       where: {
-        name: subredditName,
+        id: subredditId,
       },
     });
     if (!subreddit) {
-      throw new Error("Subreddit not found");
+      return res.status(404).json({ message: "Subreddit not found" });
     }
     if (subreddit.createdById === user.id) {
-      next();
+      req.subreddit = subreddit;
+      return next();
     }
-    throw new Error("User is not the subreddit creator");
+    return res.status(403).json({ message: "User is not the creator" });
   } catch (error) {
-    res.status(400).json({ message: "Error" });
+    return res.status(400).json({ message: "Error" });
   }
 };
