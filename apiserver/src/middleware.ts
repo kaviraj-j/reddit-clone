@@ -23,7 +23,7 @@ export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
   try {
     const userDetails = jwt.verify(token, jwtSecretKey) as JwtPayoad;
     req.user = userDetails;
-    next();
+    return next();
   } catch (err) {
     return res
       .status(403)

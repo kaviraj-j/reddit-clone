@@ -29,4 +29,15 @@ subredditRouter
     SubRedditController.deleteSubreddit
   );
 
+subredditRouter.post(
+  "/:subredditId/follow",
+  isLoggedIn,
+  SubRedditController.followSubreddit
+);
+// subredditRouter.post(
+//   "/:subredditId/unfollow",
+//   isLoggedIn,
+//   SubRedditController.unfollowSubreddit
+// );
+
 export default subredditRouter;
