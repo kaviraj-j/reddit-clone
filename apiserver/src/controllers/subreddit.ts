@@ -76,7 +76,7 @@ export const editSubreddit = async (req: Request, res: Response) => {
   try {
     const subreddit: Subreddit = req.subreddit;
     if (!subreddit) {
-      return;
+      return res.status(404).json({ message: "Subreddit not found" });
     }
 
     const { bannerImageUrl, description, iconImageUrl } = req.body;
@@ -96,6 +96,25 @@ export const editSubreddit = async (req: Request, res: Response) => {
       },
       data: { ...subreddit },
     });
-    return res.status(200).json({message: "Subreddit edited successfully"})
-  } catch (error) {}
+    return res.status(200).json({ message: "Subreddit edited successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteSubreddit = async (req: Request, res: Response) => {
+  try {
+    const subreddit: Subreddit = req.subreddit;
+    if (!subreddit) {
+      return res.status(404).json({ message: "Subreddit not found" });
+    }
+    await prisma.subReddit.delete({
+      where: {
+        id: subreddit.id,
+      },
+    });
+    return res.status(200).json({ message: "Subreddit deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };

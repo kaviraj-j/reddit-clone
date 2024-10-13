@@ -20,7 +20,11 @@ subredditRouter.get("/:subredditName", SubRedditController.getSubRedditDetails);
 
 subredditRouter
   .route("/:subredditId")
-  .put(isLoggedIn, isCreatorOfSubreddit, SubRedditController.editSubreddit);
-// .delete(isLoggedIn, SubRedditController.deleteSubreddit());
+  .put(isLoggedIn, isCreatorOfSubreddit, SubRedditController.editSubreddit)
+  .delete(
+    isLoggedIn,
+    isCreatorOfSubreddit,
+    SubRedditController.deleteSubreddit
+  );
 
 export default subredditRouter;

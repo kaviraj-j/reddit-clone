@@ -44,7 +44,6 @@ export const isCreatorOfSubreddit = async (
   }
   const { subredditId } = req.params;
   try {
-    console.log("Inside try block");
     const subreddit = await prisma.subReddit.findFirst({
       where: {
         id: subredditId,
