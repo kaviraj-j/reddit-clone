@@ -176,3 +176,49 @@ export const followSubreddit = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const unfollowSubreddit = async (req: Request, res: Response) => {
+  const { subredditId } = req.params;
+  const userDetails = req.user;
+  if (!userDetails) {
+    return res.status(404).json({ message: "User not found", type: "error" });
+  }
+  try {
+    const subReddit = await prisma.subReddit.findFirst({
+      where: {
+        id: subredditId,
+      },
+    });
+    if (!subReddit) {
+      return res
+        .status(404)
+        .json({ message: "Subreddit not found", type: "error" });
+    }
+    const userFollowsSubreddit = await isUserFollowingSubreddit(
+      userDetails.id,
+      subReddit.id
+    );
+    if (!userFollowsSubreddit) {
+      return res
+        .status(403)
+        .json({ type: "fail", message: "User not following subreddit" });
+    }
+
+    await prisma.subReddit.update({
+      where: { id: subReddit.id },
+      data: {
+        membersCount: subReddit.membersCount + 1,
+        followedBy: {
+          disconnect: {
+            id: userDetails.id,
+          },
+        },
+      },
+    });
+    return res
+      .status(200)
+      .json({ message: "Unfollowed subreddit successfully", type: "success" });
+  } catch (err) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

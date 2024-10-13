@@ -34,10 +34,10 @@ subredditRouter.post(
   isLoggedIn,
   SubRedditController.followSubreddit
 );
-// subredditRouter.post(
-//   "/:subredditId/unfollow",
-//   isLoggedIn,
-//   SubRedditController.unfollowSubreddit
-// );
+subredditRouter.post(
+  "/:subredditId/unfollow",
+  isLoggedIn,
+  SubRedditController.unfollowSubreddit
+);
 
 export default subredditRouter;
