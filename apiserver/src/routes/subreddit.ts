@@ -16,6 +16,8 @@ subredditRouter.get(
   SubRedditController.getUserFollwedSubReddits
 );
 
+subredditRouter.get("/", SubRedditController.getSubreddits);
+
 subredditRouter.get("/:subredditName", SubRedditController.getSubRedditDetails);
 
 subredditRouter

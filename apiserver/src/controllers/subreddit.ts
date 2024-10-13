@@ -33,6 +33,13 @@ export const createNewSubReddit = async (req: Request, res: Response) => {
   }
 };
 
+export const getSubreddits = async (req: Request, res: Response) => {
+  const subReddits = await prisma.subReddit.findMany();
+  return res
+    .status(200)
+    .json({ data: subReddits, message: "Subreddits found" });
+};
+
 export const getUserFollwedSubReddits = async (req: Request, res: Response) => {
   if (!req.user?.id) {
     return res.status(401).json("Invalid request");
