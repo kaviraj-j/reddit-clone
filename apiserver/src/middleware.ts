@@ -61,3 +61,31 @@ export const isCreatorOfSubreddit = async (
     return res.status(400).json({ message: "Error" });
   }
 };
+
+export const isAuthor = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userDetails = req.user;
+  const { postId } = req.params;
+  if (!userDetails) {
+    return res.status(403).json({ message: "Unauthorized request" });
+  }
+
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+  });
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+  if (post.authorId === userDetails.id) {
+    req.post = post;
+    return next();
+  }
+  return res
+    .status(403)
+    .json({ message: "You are not the author of the post" });
+};

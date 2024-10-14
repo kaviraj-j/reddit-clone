@@ -1,6 +1,5 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, SubReddit } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
-import { Subreddit } from "../types";
 import { isUserFollowingSubreddit } from "../services/subreddit";
 
 const prisma = new PrismaClient();
@@ -86,7 +85,7 @@ export const getSubRedditDetails = async (req: Request, res: Response) => {
 
 export const editSubreddit = async (req: Request, res: Response) => {
   try {
-    const subreddit: Subreddit = req.subreddit;
+    const subreddit: SubReddit | undefined = req.subreddit;
     if (!subreddit) {
       return res.status(404).json({ message: "Subreddit not found" });
     }
@@ -116,7 +115,7 @@ export const editSubreddit = async (req: Request, res: Response) => {
 
 export const deleteSubreddit = async (req: Request, res: Response) => {
   try {
-    const subreddit: Subreddit = req.subreddit;
+    const subreddit: SubReddit | undefined = req.subreddit;
     if (!subreddit) {
       return res.status(404).json({ message: "Subreddit not found" });
     }

@@ -87,3 +87,59 @@ export const getPosts = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Error in getting posts" });
   }
 };
+
+export const getPostDetails = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params;
+    const postDetails = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+    });
+    if (!postDetails) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    return res.status(200).json({ type: "success", data: postDetails });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const editPost = async (req: Request, res: Response) => {
+  try {
+    const postDetails = req.post;
+    if (!postDetails) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    const { title, description } = req.body;
+    const updatedPost = await prisma.post.update({
+      where: { id: postDetails.id },
+      data: {
+        title: title || postDetails.title,
+        description: description || postDetails.description,
+      },
+    });
+    return res
+      .status(200)
+      .json({ type: "success", data: "Post details edited successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const deletePost = async (req: Request, res: Response) => {
+  try {
+    const postDetails = req.post;
+    if (!postDetails) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    await prisma.post.delete({
+      where: { id: postDetails.id },
+    });
+    return res
+      .status(200)
+      .json({ type: "success", data: "Post deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};

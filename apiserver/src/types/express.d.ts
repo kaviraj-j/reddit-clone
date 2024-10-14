@@ -1,11 +1,11 @@
-import { Prisma, User, Post } from "@prisma/client";
-import { Subreddit, User } from "./index";
-
+import { Prisma, Post, SubReddit } from "@prisma/client";
+import { User } from ".";
 declare global {
   namespace Express {
     interface Request {
       user?: User;
-      subreddit: Subreddit;
+      subreddit?: SubReddit;
+      post?: Post;
     }
   }
 }
