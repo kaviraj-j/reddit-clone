@@ -160,7 +160,9 @@ export const followSubreddit = async (req: Request, res: Response) => {
     await prisma.subReddit.update({
       where: { id: subReddit.id },
       data: {
-        membersCount: subReddit.membersCount + 1,
+        membersCount: {
+          increment: 1,
+        },
         followedBy: {
           connect: {
             id: userDetails.id,
@@ -206,7 +208,9 @@ export const unfollowSubreddit = async (req: Request, res: Response) => {
     await prisma.subReddit.update({
       where: { id: subReddit.id },
       data: {
-        membersCount: subReddit.membersCount + 1,
+        membersCount: {
+          decrement: 1,
+        },
         followedBy: {
           disconnect: {
             id: userDetails.id,
