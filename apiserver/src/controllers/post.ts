@@ -1,5 +1,6 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, VoteType } from "@prisma/client";
 import { Request, Response } from "express";
+import * as PostService from "../services/post";
 const prisma = new PrismaClient();
 
 interface PostFilter {
@@ -139,6 +140,91 @@ export const deletePost = async (req: Request, res: Response) => {
     return res
       .status(200)
       .json({ type: "success", data: "Post deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const upvotePost = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params;
+    if (!req.user) {
+      return res.status(404).json({ type: "error", data: "Post not found" });
+    }
+
+    const postDetails = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+    if (!postDetails) {
+      return res.status(404).json({ type: "error", data: "Post not found" });
+    }
+    const voteExist = await prisma.vote.findUnique({
+      where: {
+        userId_postId: {
+          postId: postDetails.id,
+          userId: req.user?.id,
+        },
+      },
+    });
+    if (voteExist?.voteType === "UPVOTE") {
+      console.log({ voteExist });
+      return res
+        .status(405)
+        .json({ message: "Already upvoted", type: "error" });
+    }
+
+    await PostService.createVote(
+      voteExist,
+      postDetails.id,
+      req.user.id,
+      "UPVOTE"
+    );
+    return res
+      .status(200)
+      .json({ type: "success", data: "Upvoted post successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const downvotePost = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params;
+    if (!req.user) {
+      return res.status(404).json({ type: "error", data: "Post not found" });
+    }
+
+    const postDetails = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+    if (!postDetails) {
+      return res.status(404).json({ type: "error", data: "Post not found" });
+    }
+    const voteExist = await prisma.vote.findUnique({
+      where: {
+        userId_postId: {
+          postId: postDetails.id,
+          userId: req.user?.id,
+        },
+      },
+    });
+    if (voteExist && voteExist.voteType === "DOWNVOTE") {
+      console.log({ voteExist });
+      return res
+        .status(405)
+        .json({ message: "Already downvoted", type: "error" });
+    }
+
+    await PostService.createVote(
+      voteExist,
+      postDetails.id,
+      req.user.id,
+      "DOWNVOTE"
+    );
+
+    return res
+      .status(200)
+      .json({ type: "success", data: "Downvoted post successfully" });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
