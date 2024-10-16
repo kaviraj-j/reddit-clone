@@ -89,3 +89,31 @@ export const isAuthor = async (
     .status(403)
     .json({ message: "You are not the author of the post" });
 };
+
+export const isCommentOwner = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userDetails = req.user;
+  const { commentId } = req.params;
+  if (!userDetails) {
+    return res.status(403).json({ message: "Unauthorized request" });
+  }
+  const commentDetails = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+    },
+  });
+
+  if (!commentDetails) {
+    return res.status(404).json({ message: "Comment not found" });
+  }
+  if (commentDetails.userId === userDetails.id) {
+    req.comment = commentDetails;
+    return next();
+  }
+  return res
+    .status(403)
+    .json({ message: "You are not the author of the post" });
+};

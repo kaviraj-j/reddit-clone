@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isAuthor, isLoggedIn } from "../middleware";
+import { isAuthor, isLoggedIn, isCommentOwner } from "../middleware";
 import * as PostController from "../controllers/post";
 
 const postRouter: Router = Router();
@@ -15,5 +15,15 @@ postRouter
 
 postRouter.post("/:postId/upvote", isLoggedIn, PostController.upvotePost);
 postRouter.post("/:postId/downvote", isLoggedIn, PostController.downvotePost);
+
+postRouter
+  .route("/:postId/comment")
+  .post(isLoggedIn, PostController.addComment)
+  .get(PostController.getComments);
+
+postRouter
+  .route("/comment/:commentId")
+  .put(isLoggedIn, isCommentOwner, PostController.editComment)
+  .delete(isLoggedIn, isCommentOwner, PostController.deleteComment);
 
 export default postRouter;

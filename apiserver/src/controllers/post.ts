@@ -149,7 +149,7 @@ export const upvotePost = async (req: Request, res: Response) => {
   try {
     const { postId } = req.params;
     if (!req.user) {
-      return res.status(404).json({ type: "error", data: "Post not found" });
+      return res.status(404).json({ type: "error", data: "User not found" });
     }
 
     const postDetails = await prisma.post.findUnique({
@@ -167,7 +167,6 @@ export const upvotePost = async (req: Request, res: Response) => {
       },
     });
     if (voteExist?.voteType === "UPVOTE") {
-      console.log({ voteExist });
       return res
         .status(405)
         .json({ message: "Already upvoted", type: "error" });
@@ -191,7 +190,7 @@ export const downvotePost = async (req: Request, res: Response) => {
   try {
     const { postId } = req.params;
     if (!req.user) {
-      return res.status(404).json({ type: "error", data: "Post not found" });
+      return res.status(404).json({ type: "error", data: "User not found" });
     }
 
     const postDetails = await prisma.post.findUnique({
@@ -209,7 +208,6 @@ export const downvotePost = async (req: Request, res: Response) => {
       },
     });
     if (voteExist && voteExist.voteType === "DOWNVOTE") {
-      console.log({ voteExist });
       return res
         .status(405)
         .json({ message: "Already downvoted", type: "error" });
@@ -225,6 +223,109 @@ export const downvotePost = async (req: Request, res: Response) => {
     return res
       .status(200)
       .json({ type: "success", data: "Downvoted post successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const addComment = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params;
+    if (!req.user) {
+      return res.status(404).json({ type: "error", data: "User not found" });
+    }
+
+    const postDetails = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+    if (!postDetails) {
+      return res.status(404).json({ type: "error", data: "Post not found" });
+    }
+
+    const content: string = req.body.content;
+    const newComment = await prisma.comment.create({
+      data: {
+        content,
+        userId: req.user.id,
+        post: {
+          connect: {
+            id: postDetails.id,
+          },
+        },
+      },
+    });
+    return res.status(200).json({
+      type: "success",
+      message: "Commented Successfully",
+      data: newComment,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getComments = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params;
+
+    const comments = await prisma.comment.findMany({
+      where: {
+        postId: postId,
+      },
+    });
+    return res.status(200).json({
+      type: "success",
+      data: comments,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const editComment = async (req: Request, res: Response) => {
+  try {
+    const { commentId } = req.params;
+    const comment = req.comment;
+
+    if (!comment) {
+      return res.status(404).json({ type: "error", data: "Comment not found" });
+    }
+    const content: string = req.body.content;
+    await prisma.comment.update({
+      where: {
+        id: commentId,
+      },
+      data: {
+        content,
+      },
+    });
+    return res
+      .status(200)
+      .json({ type: "success", data: "Comment updated Successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const deleteComment = async (req: Request, res: Response) => {
+  try {
+    const { commentId } = req.params;
+    const comment = req.comment;
+
+    if (!comment) {
+      return res.status(404).json({ type: "error", data: "Comment not found" });
+    }
+    const content: string = req.body.content;
+    await prisma.comment.delete({
+      where: {
+        id: commentId,
+      },
+    });
+    return res
+      .status(200)
+      .json({ type: "success", data: "Comment deleted Successfully" });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }

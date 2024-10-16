@@ -1,4 +1,4 @@
-import { Prisma, Post, SubReddit } from "@prisma/client";
+import { Prisma, Post, SubReddit, Comment } from "@prisma/client";
 import { User } from ".";
 declare global {
   namespace Express {
@@ -6,6 +6,7 @@ declare global {
       user?: User;
       subreddit?: SubReddit;
       post?: Post;
+      comment?: Comment;
     }
   }
 }
