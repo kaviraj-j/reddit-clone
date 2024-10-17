@@ -46,7 +46,7 @@ model SubReddit {
 model Post {
   id            String    @id @default(uuid())
   title         String
-  description   String
+  content       String
   imagesUrl     String[]
   videosUrl     String[]
   author        User      @relation("AuthoredPosts", fields: [authorId], references: [id])

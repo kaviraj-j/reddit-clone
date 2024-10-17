@@ -15,6 +15,7 @@ export const createNewSubReddit = async (req: Request, res: Response) => {
         id: req.user.id,
       },
     },
+    membersCount: 1,
   };
 
   try {

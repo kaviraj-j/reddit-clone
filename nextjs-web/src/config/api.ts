@@ -11,4 +11,9 @@ export const subredditUrl = {
   new: `${apiBaseUrl}/subreddit/new`,
   getDetails: `${apiBaseUrl}/subreddit`,
   follwedSubReddits: `${apiBaseUrl}/subreddit/follwed`,
+  getPosts: `${apiBaseUrl}/posts`,
+};
+
+export const postUrl = {
+  getPosts: `${apiBaseUrl}/post`,
 };

@@ -55,7 +55,7 @@ const LoginButton = () => {
   return (
     <>
       <button
-        className="bg-orange-600 text-white px-2 py-1 m-3 rounded-2xl"
+        className="bg-orange-600 text-white px-2 py-1 rounded-2xl"
         onClick={() => handleClick()}
       >
         {user ? user.username : "Log In"}

@@ -17,11 +17,11 @@ export const newPost = async (req: Request, res: Response) => {
         .json({ message: "User must be logged in to create a post" });
     }
 
-    const { title, description, subredditId, ...rest } = req.body;
-    if (!title || !description) {
+    const { title, content, subredditId, ...rest } = req.body;
+    if (!title || !content) {
       return res
         .status(400)
-        .json({ message: "Title and description are required" });
+        .json({ message: "Title and content are required" });
     }
 
     const subredditDetails = prisma.subReddit.findFirst({
@@ -36,7 +36,7 @@ export const newPost = async (req: Request, res: Response) => {
 
     const postDetails: Prisma.PostCreateInput = {
       title,
-      description,
+      content,
       authorId: userId,
       subredditId: subredditId,
       ...rest,
@@ -57,7 +57,7 @@ export const newPost = async (req: Request, res: Response) => {
 export const getPosts = async (req: Request, res: Response) => {
   try {
     const queryParams = req.query;
-    const subredditName = queryParams.subReddit?.toString() ?? "";
+    const subredditName = queryParams.subredditName?.toString() ?? "";
     const userId = queryParams.userId?.toString() ?? "";
     let subreddit = null;
     if (subredditName) {
@@ -69,6 +69,8 @@ export const getPosts = async (req: Request, res: Response) => {
       }
     }
 
+    console.log({ subredditName, subreddit });
+
     const filter: PostFilter = {};
     if (subreddit) {
       filter.subredditId = subreddit.id;
@@ -76,11 +78,13 @@ export const getPosts = async (req: Request, res: Response) => {
     if (userId) {
       filter.authorId = userId;
     }
-
     const posts = await prisma.post.findMany({
       where: filter,
       skip: 0,
       take: 10,
+      include: {
+        author: true,
+      },
     });
 
     return res.status(200).json({ type: "success", data: posts });
@@ -112,12 +116,12 @@ export const editPost = async (req: Request, res: Response) => {
     if (!postDetails) {
       return res.status(404).json({ message: "Post not found" });
     }
-    const { title, description } = req.body;
+    const { title, content } = req.body;
     const updatedPost = await prisma.post.update({
       where: { id: postDetails.id },
       data: {
         title: title || postDetails.title,
-        description: description || postDetails.description,
+        content: content || postDetails.content,
       },
     });
     return res

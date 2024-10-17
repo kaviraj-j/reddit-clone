@@ -33,3 +33,12 @@ export interface SubReddit {
   updatedAt: Date;
   createdById: string;
 }
+
+export interface Post {
+  id: number;
+  title: string;
+  author: string;
+  upvotes: number;
+  comments: number;
+  content: string;
+}

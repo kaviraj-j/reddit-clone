@@ -1,13 +1,15 @@
 import React from "react";
 import { Search } from "lucide-react";
+import Link from "next/link";
 
 type Props = {};
 
 const SearchBar = (props: Props) => {
   return (
     <div className="container mx-auto flex items-center justify-between">
-      <h1 className="text-2xl font-bold text-orange-500">reddit</h1>
-
+      <h1 className="text-2xl font-bold text-orange-500">
+        <Link href="/">reddit</Link>
+      </h1>
       <div className="flex-grow mx-4">
         <div className="relative">
           <input

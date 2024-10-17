@@ -32,7 +32,7 @@ export default function SidePanel() {
   }, [token]);
 
   const Sidebar = () => (
-    <div className="flex h-screen w-64 flex-col overflow-y-auto border-r px-4 py-8 text-white bg-black mr-2">
+    <div className="flex h-screen w-64 flex-col overflow-y-auto border-r px-4 py-8 text-white bg-black mr-4">
       <ScrollArea className="flex-grow">
         <nav className="flex flex-col space-y-1 mb-1">
           {user && <CreateCommunity />}
@@ -63,7 +63,7 @@ export default function SidePanel() {
             <Button
               variant="outline"
               size="icon"
-              className="fixed left-4 top-4 z-40 lg:hidden bg-black"
+              className="ml-2 mt-3 lg:hidden bg-black"
             >
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle sidebar</span>
