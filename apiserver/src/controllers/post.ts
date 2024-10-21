@@ -30,7 +30,7 @@ export const newPost = async (req: Request, res: Response) => {
       },
     });
 
-    if (!subredditDetails) {
+    if (subredditId && !subredditDetails) {
       return res.status(400).json({ message: "Invalid Subreddit details" });
     }
 

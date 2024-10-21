@@ -44,21 +44,21 @@ model SubReddit {
 }
 
 model Post {
-  id            String    @id @default(uuid())
+  id            String     @id @default(uuid())
   title         String
   content       String
   imagesUrl     String[]
   videosUrl     String[]
-  author        User      @relation("AuthoredPosts", fields: [authorId], references: [id])
+  author        User       @relation("AuthoredPosts", fields: [authorId], references: [id])
   authorId      String
-  subreddit     SubReddit @relation(fields: [subredditId], references: [id])
-  subredditId   String
+  subreddit     SubReddit? @relation(fields: [subredditId], references: [id])
+  subredditId   String?
   votes         Vote[]
-  upvoteCount   Int       @default(0)
-  downvoteCount Int       @default(0)
+  upvoteCount   Int        @default(0)
+  downvoteCount Int        @default(0)
   comments      Comment[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now()) @updatedAt
 }
 
 model Comment {

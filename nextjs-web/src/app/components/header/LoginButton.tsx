@@ -53,12 +53,12 @@ const LoginButton = () => {
     };
   }, [showLogoutButton]);
   return (
-    <>
+    <div>
       <button
         className="bg-orange-600 text-white px-2 py-1 rounded-2xl"
         onClick={() => handleClick()}
       >
-        {user ? user.username : "Log In"}
+        {user ? user.username : "Login"}
       </button>
       {showLogoutButton && (
         <div
@@ -83,7 +83,7 @@ const LoginButton = () => {
           setShowLoginModal={setShowLoginModal}
         />
       )}
-    </>
+    </div>
   );
 };
 
