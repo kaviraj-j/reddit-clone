@@ -35,10 +35,15 @@ export interface SubReddit {
 }
 
 export interface Post {
-  id: number;
+  id: string;
   title: string;
   author: string;
   upvotes: number;
   comments: number;
+  content: string;
+}
+
+export interface NewPost {
+  title: string;
   content: string;
 }
