@@ -63,7 +63,9 @@ const SubredditPage: React.FC = () => {
     <div className="bg-black text-gray-200 min-h-screen">
       <div className="container mx-auto mt-4 flex">
         <main className="w-2/3 pr-4">
-          {posts.map((post: Post) => <ViewPost {...post} />)}
+          {posts.map((post: Post) => (
+            <ViewPost key={post.id} {...post} />
+          ))}
         </main>
         <aside className="w-1/3">
           {subreddit && (

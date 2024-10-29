@@ -77,7 +77,7 @@ const NewPost = (props: Props) => {
   };
 
   const handleNewPostSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    if(!token) {
+    if (!token) {
       return;
     }
     event.preventDefault();
@@ -91,7 +91,11 @@ const NewPost = (props: Props) => {
       contentTextAreaRef?.current?.focus();
       return;
     }
-    const response = await createPost(token, {title, content});
+    const response = await createPost(token, {
+      title,
+      content,
+      subredditId: selectedsubreddit?.id,
+    });
   };
 
   return (

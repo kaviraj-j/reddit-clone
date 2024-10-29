@@ -37,7 +37,7 @@ export interface SubReddit {
 export interface Post {
   id: string;
   title: string;
-  author: string;
+  author: User;
   upvotes: number;
   comments: number;
   content: string;
@@ -46,4 +46,5 @@ export interface Post {
 export interface NewPost {
   title: string;
   content: string;
+  subredditId?: string;
 }
