@@ -17,4 +17,6 @@ export const subredditUrl = {
 export const postUrl = {
   getPosts: `${apiBaseUrl}/post`,
   newPost: `${apiBaseUrl}/post/new`,
+  getPostDetails: `${apiBaseUrl}/post`,
+  getPostComments: `${apiBaseUrl}/post`,
 };

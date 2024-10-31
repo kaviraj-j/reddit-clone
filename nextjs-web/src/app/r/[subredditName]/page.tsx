@@ -1,14 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ArrowUp, ArrowDown, MessageSquare, Share2 } from "lucide-react";
-import {
-  redirect,
-  RedirectType,
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { redirect, RedirectType, useParams } from "next/navigation";
 import { useAuth } from "@/app/context/authContext";
 import { getSubredditDetails } from "@/lib/subreddit";
 import { getPosts } from "@/lib/post";
@@ -81,9 +73,6 @@ const SubredditPage: React.FC = () => {
                   <span>Members {subreddit.membersCount}</span>
                 </div>
               </div>
-              <button className="bg-orange-500 text-white rounded px-4 py-2 w-full hover:bg-orange-600">
-                Create Post
-              </button>
             </div>
           )}
         </aside>

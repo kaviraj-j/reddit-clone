@@ -26,6 +26,7 @@ model User {
   SubRedditsFollowed SubReddit[] @relation("FollwedBySubreddits")
   authoredPosts      Post[]      @relation("AuthoredPosts")
   votes              Vote[]
+  comments           Comment[]
 }
 
 model SubReddit {
@@ -65,6 +66,7 @@ model Comment {
   id        String   @id @default(uuid())
   post      Post     @relation(fields: [postId], references: [id])
   postId    String
+  user      User     @relation(fields: [userId], references: [id])
   userId    String
   content   String
   createdAt DateTime @default(now())

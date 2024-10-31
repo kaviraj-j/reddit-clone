@@ -7,12 +7,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { SubReddit } from "@/lib/data-types";
 import { createPost } from "@/lib/post";
 import { getFollwedSubreddits } from "@/lib/subreddit";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef, FormEvent } from "react";
 
 type Props = {};
 
 const NewPost = (props: Props) => {
   const [subreddits, setSubreddits] = useState<SubReddit[]>([]);
+  const router = useRouter();
 
   const [filteredSubreddits, setFilteredSubreddits] = useState<SubReddit[]>([]);
   const [selectedsubreddit, setSelectedSubreddit] = useState<SubReddit | null>(
@@ -96,6 +98,13 @@ const NewPost = (props: Props) => {
       content,
       subredditId: selectedsubreddit?.id,
     });
+    const { id: postId = "" } = response.response?.data?.post;
+    console.log(postId);
+    if (postId) {
+      router.replace(`/r/typescript/comments/${postId}`);
+    } else {
+      router.replace("");
+    }
   };
 
   return (

@@ -34,3 +34,33 @@ export const createPost = async (token: string, post: NewPost) => {
     return { type: "error" };
   }
 };
+
+export const getPostDetails = async (token: string, postId: string) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    const response = await axios.get(`${postUrl.getPostDetails}/${postId}`, {
+      headers,
+    });
+    return { response, type: "success" };
+  } catch (error) {
+    console;
+    return { type: "error" };
+  }
+};
+
+export const getPostComments = async (token: string, postId: string) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    const response = await axios.get(`${postUrl.getPostDetails}?postId=${postId}`, {
+      headers,
+    });
+    return { response, type: "success" };
+  } catch (error) {
+    console;
+    return { type: "error" };
+  }
+};
