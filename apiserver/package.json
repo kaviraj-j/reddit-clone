@@ -4,7 +4,8 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "rm -rf build && tsc && node build/src/index.js"
+    "start": "rm -rf build && tsc && node build/src/index.js",
+    "dev": "nodemon --watch src -e ts --exec \"tsc && node build/src/index.js\""
   },
   "keywords": [],
   "author": "",

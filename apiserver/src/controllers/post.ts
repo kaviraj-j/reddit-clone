@@ -100,6 +100,15 @@ export const getPostDetails = async (req: Request, res: Response) => {
       where: {
         id: postId,
       },
+      include: {
+        comments: {
+          select: {
+            content: true,
+            user: true,
+            createdAt: true,
+          },
+        },
+      },
     });
     if (!postDetails) {
       return res.status(404).json({ message: "Post not found" });
@@ -250,7 +259,11 @@ export const addComment = async (req: Request, res: Response) => {
     const newComment = await prisma.comment.create({
       data: {
         content,
-        userId: req.user.id,
+        user: {
+          connect: {
+            id: req.user.id,
+          },
+        },
         post: {
           connect: {
             id: postDetails.id,

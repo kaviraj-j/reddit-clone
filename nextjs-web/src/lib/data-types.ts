@@ -39,7 +39,6 @@ export interface Post {
   title: string;
   author: User;
   upvotes: number;
-  comments: number;
   content: string;
 }
 
@@ -56,4 +55,5 @@ export interface Comment {
   content: string;
   createdAt: Date;
   updatedAt: Date;
+  user: User;
 }

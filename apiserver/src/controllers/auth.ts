@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import * as db from "../db";
-import { Prisma, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import jwt from "jsonwebtoken";
-import { genSaltSync, hashSync, hash, compare } from "bcrypt";
-import { getUserFromToken } from "../utils/auth";
+import { hash, compare } from "bcrypt";
 import { z } from "zod";
 import { AuthErrors } from "../lib/error-types/auth";
 import { PrismaClient } from "@prisma/client";

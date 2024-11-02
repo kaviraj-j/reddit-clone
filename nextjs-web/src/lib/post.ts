@@ -55,9 +55,34 @@ export const getPostComments = async (token: string, postId: string) => {
     Authorization: `Bearer ${token}`,
   };
   try {
-    const response = await axios.get(`${postUrl.getPostDetails}?postId=${postId}`, {
-      headers,
-    });
+    const response = await axios.get(
+      `${postUrl.getPostDetails}?postId=${postId}`,
+      {
+        headers,
+      }
+    );
+    return { response, type: "success" };
+  } catch (error) {
+    console;
+    return { type: "error" };
+  }
+};
+export const addComment = async (
+  token: string,
+  content: string,
+  postId: string
+) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    const response = await axios.post(
+      `${postUrl.getPostDetails}/${postId}/comment`,
+      { content },
+      {
+        headers,
+      }
+    );
     return { response, type: "success" };
   } catch (error) {
     console;
