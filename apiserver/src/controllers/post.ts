@@ -81,9 +81,19 @@ export const getPosts = async (req: Request, res: Response) => {
     const posts = await prisma.post.findMany({
       where: filter,
       skip: 0,
-      take: 10,
+      take: 20,
       include: {
-        author: true,
+        author: {
+          select: {
+            username: true,
+          },
+        },
+        subreddit: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
 
@@ -107,6 +117,12 @@ export const getPostDetails = async (req: Request, res: Response) => {
             user: true,
             createdAt: true,
             id: true,
+          },
+        },
+        subreddit: {
+          select: {
+            id: true,
+            name: true,
           },
         },
       },

@@ -40,6 +40,7 @@ export interface Post {
   author: User;
   upvotes: number;
   content: string;
+  subreddit: SubReddit;
 }
 
 export interface NewPost {
