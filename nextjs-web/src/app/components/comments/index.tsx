@@ -2,12 +2,13 @@ import { useAuth } from "@/app/context/authContext";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Comment } from "@/lib/data-types";
-import { addComment } from "@/lib/post";
+import { addComment, deleteComment } from "@/lib/post";
 import React, { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import moment from "moment";
+import { Edit2, Trash2 } from "lucide-react";
 
 export default function Comments({
   initialComments,
@@ -34,6 +35,21 @@ export default function Comments({
       console.log("Error in adding comment");
     }
     setIsSubmitting(false);
+  };
+
+  const isAuthor = (username: string) => username === user?.username;
+
+  const handleDeleteComment = async (commentId: string) => {
+    const response = await deleteComment(token ?? "", commentId);
+    console.log({ response });
+    if (response.response?.data?.type === "success") {
+      const filteredComments = comments.filter(
+        (comment) => comment.id !== commentId
+      );
+      setComments(filteredComments);
+    } else {
+      console.log("Error in deleting comment");
+    }
   };
 
   return (
@@ -75,6 +91,21 @@ export default function Comments({
                       {moment(comment.createdAt).fromNow()}
                     </p>
                     <p className="mt-2">{comment.content}</p>
+                  </div>
+                  <div>
+                    {isAuthor(comment.user.username) && (
+                      <p className="flex space-x-1">
+                        <Button
+                          className=""
+                          onClick={() => handleDeleteComment(comment.id)}
+                        >
+                          <Trash2 className="size-4" />
+                        </Button>
+                        {/* <Button onClick={() => handleDeleteComment(comment.id)}>
+                          <Edit2 className="size-4" />
+                        </Button> */}
+                      </p>
+                    )}
                   </div>
                 </div>
               </CardContent>

@@ -89,3 +89,20 @@ export const addComment = async (
     return { type: "error" };
   }
 };
+export const deleteComment = async (token: string, commentId: string) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    const response = await axios.delete(
+      `${postUrl.deletePostComments}/comment/${commentId}`,
+      {
+        headers,
+      }
+    );
+    return { response, type: "success" };
+  } catch (error) {
+    console;
+    return { type: "error" };
+  }
+};

@@ -19,4 +19,5 @@ export const postUrl = {
   newPost: `${apiBaseUrl}/post/new`,
   getPostDetails: `${apiBaseUrl}/post`,
   getPostComments: `${apiBaseUrl}/post`,
+  deletePostComments: `${apiBaseUrl}/post`
 };

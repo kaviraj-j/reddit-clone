@@ -106,6 +106,7 @@ export const getPostDetails = async (req: Request, res: Response) => {
             content: true,
             user: true,
             createdAt: true,
+            id: true,
           },
         },
       },
